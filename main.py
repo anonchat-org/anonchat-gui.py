@@ -1,9 +1,9 @@
 import argparse, sys, socket
-import threading
+import threading, json
 
 import tkinter as tk
 from tkinter import *
-from tkinter.scrolledtext import ScrolledText    
+from tkinter.scrolledtext import ScrolledText
 
 VERSION = "v0.1"
 
@@ -75,16 +75,21 @@ class GUI:
                 
             if not message:
                 break
-                
+
             try:
                 message = message.decode()
+                try:
+                    message = json.loads(message.strip())
+                except:
+                    message = {"user": "V1-Message", "msg": message}
+                    
             except:
-                message = "Message was recieved, but the contents cannot be decoded :("
-            else:
-                message = message.strip()
-            
+                message = ({"user": "[CLIENT]", "msg": "Message was recieved, but the contents cannot be decoded :("})
+
             self.text['state'] = 'normal'
-            self.text.insert(tk.END, "\n"+message.replace("\n", "\n >"))
+
+            spaces = len("<"+message['user']+"> ")*" "
+            self.text.insert(tk.END, "\n" + f'<{message["user"]}> ' + message["msg"].replace("\n", f"\n{spaces}"))
             self.text['state'] = 'disabled'
 
     def prepare_layout(self):
@@ -112,8 +117,8 @@ class GUI:
                 self.text['state'] = 'disabled'
             
         if not send:
-            message = f"<{self.name}> "+text
-            self.socket.send(message.encode())
+            message = {"user": self.name, "msg": text}                    
+            self.socket.send(json.dumps(message, ensure_ascii=False).encode())
 
         self.entry.delete(0, 'end')
             
