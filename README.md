@@ -1,5 +1,5 @@
 # anonchat-gui.py
-Python implementation of anonchat GUI
+Python implementation of anonchat GUI [V2]
 
 ## Usage
 ```
