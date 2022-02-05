@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 
-VERSION = "v0.1"
+VERSION = "v0.2"
 
 class Commands:
     def __init__(self):
@@ -88,9 +88,10 @@ class GUI:
 
             self.text['state'] = 'normal'
 
-            spaces = len("<"+message['user']+"> ")*" "
+            spaces = len(f'<{message["user"]}> ')*" "
             self.text.insert(tk.END, "\n" + f'<{message["user"]}> ' + message["msg"].replace("\n", f"\n{spaces}"))
             self.text['state'] = 'disabled'
+            self.text.see("end")
 
     def prepare_layout(self):
         self.t_text = tk.StringVar()
