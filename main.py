@@ -110,11 +110,11 @@ class GUI:
         send = False
         
         if text.startswith("/"):
-            send, text = CommandProcess(text[1:], self.name, self)
+            send, text_cmd = CommandProcess(text[1:], self.name, self)
 
             if send:
                 self.text['state'] = 'normal'
-                self.text.insert(tk.END, text)
+                self.text.insert(tk.END, text_cmd)
                 self.text['state'] = 'disabled'
             
         if not send:
